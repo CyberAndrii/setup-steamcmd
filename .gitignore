@@ -1,0 +1,4 @@
+node_modules/
+
+# Created when using 'act --bind' command
+steamcmd/

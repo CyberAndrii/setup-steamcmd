@@ -1,0 +1,33 @@
+{
+  "name": "setup-steamcmd",
+  "version": "1.0.0",
+  "description": "This action sets up the Steam Console Client for use in actions.",
+  "main": "dist/index.js",
+  "dependencies": {
+    "@actions/core": "^1.2.4",
+    "@actions/exec": "^1.0.4",
+    "@actions/tool-cache": "^1.6.0"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.23.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "ncc build src/index.js -o dist --source-map"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CyberAndrii/setup-steamcmd.git"
+  },
+  "keywords": [
+    "GitHub",
+    "Actions",
+    "SteamCMD"
+  ],
+  "author": "Andrii Vitiv",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CyberAndrii/setup-steamcmd/issues"
+  },
+  "homepage": "https://github.com/CyberAndrii/setup-steamcmd#readme"
+}

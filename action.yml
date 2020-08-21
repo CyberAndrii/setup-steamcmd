@@ -1,0 +1,14 @@
+name: 'Setup SteamCMD'
+description: 'This action sets up SteamCMD for use in actions.'
+author: 'Andrii Vitiv'
+branding:
+  icon: 'terminal'
+  color: 'gray-dark'
+outputs:
+  directory:
+    description: 'Directory where SteamCMD was installed.'
+  executable:
+    description: 'Path to steamcmd.sh or steamcmd.exe file depending on OS.'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

@@ -1,0 +1,29 @@
+name: Integration test
+
+on:
+  push:
+    branches: [ master ]
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    branches: [ master ]
+    paths-ignore:
+      - '**.md'
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macOS-latest ]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup steamcmd
+      uses: ./
+
+    - name: Run steamcmd
+      run: steamcmd +quit
+      # PowerShell (default on Windows) hides error messages
+      shell: bash
