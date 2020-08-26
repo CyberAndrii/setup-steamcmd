@@ -123,7 +123,7 @@ async function install()
         {
             if(error.message.endsWith('failed with exit code 7'))
             {
-                core.warning('Skipping exit code 7.');
+                core.info('Skipping exit code 7.');
             }
             else
             {
