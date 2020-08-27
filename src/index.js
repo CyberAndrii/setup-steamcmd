@@ -109,26 +109,23 @@ async function install()
         await fs.chmod(binExe, 0o755);
     }
 
-    // SteamCMD exits with code 7 on first run on Windows.
-    if(isWin32)
-    {
-        core.info('Starting ...');
+    core.info('Updating ...');
 
-        try
+    try
+    {
+        const executable = getExecutablePath(installDir).replace(/\\/g, "/");
+        await exec.exec(executable, ['+quit']);
+    }
+    catch(error)
+    {
+        // SteamCMD exits with code 7 on first run on Windows.
+        if(isWin32 && error.message.endsWith('failed with exit code 7'))
         {
-            const executable = getExecutablePath(installDir).replace(/\\/g, "/");
-            await exec.exec(executable, ['+quit']);
+            core.info('Skipping exit code 7.');
         }
-        catch(error)
+        else
         {
-            if(error.message.endsWith('failed with exit code 7'))
-            {
-                core.info('Skipping exit code 7.');
-            }
-            else
-            {
-                throw error;
-            }
+            throw error;
         }
     }
 
