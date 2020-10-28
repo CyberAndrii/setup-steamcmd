@@ -67,7 +67,7 @@ jobs:
            "appid"  "304930"
            "publishedfileid"  "2086878484"
            "contentfolder"  "${{ github.workspace }}/content/"
-           "changenote"  "https://github.com/${{ env.GITHUB_REPOSITORY }}/actions/runs/${{ env.GITHUB_RUN_ID }}"
+           "changenote"  "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           }
 
     - name: Generate auth code for upload
