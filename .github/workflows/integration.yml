@@ -86,9 +86,7 @@ jobs:
     # Wait for next 2FA code
     # Because same code can't be used more than once
     - name: Wait
-      uses: jakejarvis/wait-action@master
-      with:
-        time: 30s
+      run: sleep 30s
 
     - name: Generate auth code for download
       uses: CyberAndrii/steam-totp@v1
