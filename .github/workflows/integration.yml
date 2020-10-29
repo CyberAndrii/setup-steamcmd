@@ -2,7 +2,7 @@ name: Integration test
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, dev ]
     paths-ignore:
       - '**.md'
   pull_request:
@@ -11,7 +11,7 @@ on:
       - '**.md'
 
 jobs:
-  test:
+  login:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -23,7 +23,86 @@ jobs:
     - name: Setup steamcmd
       uses: ./
 
-    - name: Run steamcmd
-      run: steamcmd +quit
-      # PowerShell (default on Windows) hides error messages
+    - name: Login anonymously
+      run: steamcmd +login anonymous +quit
+      # PowerShell (default on Windows) hides some error messages
       shell: bash
+
+  upload-to-workshop:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup steamcmd
+      uses: ./
+      id: setup-steamcmd
+
+    - name: Get current time
+      uses: gerred/actions/current-time@master
+      id: current-time
+
+    - name: Create content file
+      run: |
+        mkdir -p $content_dir
+        echo $content >> $content_file
+        cat $content_file
+      env:
+        content_dir: ${{ github.workspace }}/content/
+        content_file: ${{ github.workspace }}/content/content.txt
+        content: ${{ steps.current-time.outputs.time }}
+
+    - name: Create config file
+      run: |
+        echo $content >> $config_file
+        cat $config_file
+      env:
+        config_file: ${{ github.workspace }}/workshop_build.vdf
+        content: >
+          "workshopitem"
+          {
+           "appid"  "304930"
+           "publishedfileid"  "2086878484"
+           "contentfolder"  "${{ github.workspace }}/content/"
+           "changenote"  "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          }
+
+    - name: Generate auth code for upload
+      uses: CyberAndrii/steam-totp@v1
+      id: generate-code-for-upload
+      with:
+        shared_secret: ${{ secrets.STEAM_SHARED_SECRET }}
+
+    - name: Upload to workshop
+      run: >-
+        steamcmd
+        +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" ${{ steps.generate-code-for-upload.outputs.code }}
+        +workshop_build_item "${{ github.workspace }}/workshop_build.vdf"
+        +quit
+
+    # Wait for next 2FA code
+    # Because same code can't be used more than once
+    - name: Wait
+      run: sleep 30s
+
+    - name: Generate auth code for download
+      uses: CyberAndrii/steam-totp@v1
+      id: generate-code-for-download
+      with:
+        shared_secret: ${{ secrets.STEAM_SHARED_SECRET }}
+
+    - name: Download from workshop
+      run: >-
+        steamcmd
+        +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" ${{ steps.generate-code-for-download.outputs.code }}
+        +workshop_download_item 304930 2086878484
+        +quit
+
+    - name: Verify content equality
+      run: cmp $original_content_file $HOME$downloaded_content_file
+      env:
+        original_content_file: ${{ github.workspace }}/content/content.txt
+        downloaded_content_file: /Steam/steamapps/workshop/content/304930/2086878484/content.txt
