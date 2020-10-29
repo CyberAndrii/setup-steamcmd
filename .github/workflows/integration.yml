@@ -102,7 +102,7 @@ jobs:
         +quit
 
     - name: Verify content equality
-      run: cmp $original_content_file $downloaded_content_file
+      run: cmp $original_content_file $HOME$downloaded_content_file
       env:
         original_content_file: ${{ github.workspace }}/content/content.txt
-        downloaded_content_file: ${{ env.HOME }}/Steam/steamapps/workshop/content/304930/2086878484/content.txt
+        downloaded_content_file: /Steam/steamapps/workshop/content/304930/2086878484/content.txt
