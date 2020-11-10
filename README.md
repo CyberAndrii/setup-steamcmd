@@ -7,7 +7,7 @@ This action sets up the **Steam Console Client** for use in actions.
 
 # Usage
 
-The following example will install and validate the app with id 1337.
+The following example will update the app with id 1337.
 
 ```yaml
 steps:
@@ -18,11 +18,9 @@ steps:
   run: steamcmd +login anonymous +app_update 1337 validate +quit
 ```
 
-More information about SteamCMD can be found in the [official wiki](https://developer.valvesoftware.com/wiki/SteamCMD).
-
 # Outputs
 
 | name       | description                                              |
 |------------|----------------------------------------------------------|
-| directory  | Directory where SteamCMD was installed                   |
+| directory  | Directory where steamcmd was installed                   |
 | executable | Path to steamcmd.sh or steamcmd.exe file depending on OS |
