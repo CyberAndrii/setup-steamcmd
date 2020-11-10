@@ -1,4 +1,4 @@
-require('./sourcemap-register.js');module.exports =
+module.exports =
 /******/ (function(modules, runtime) { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	// The module cache
@@ -40,7 +40,7 @@ require('./sourcemap-register.js');module.exports =
 /******/ 	// the startup function
 /******/ 	function startup() {
 /******/ 		// Load entry module and return exports
-/******/ 		return __webpack_require__(351);
+/******/ 		return __webpack_require__(135);
 /******/ 	};
 /******/
 /******/ 	// run startup
@@ -67,6 +67,41 @@ module.exports = require("os");
 /***/ (function(module) {
 
 module.exports = require("child_process");
+
+/***/ }),
+
+/***/ 135:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const installer = __webpack_require__(925);
+const core = __webpack_require__(186);
+function run() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const installInfo = yield installer.installIfNeed();
+            core.setOutput('directory', installInfo.directory);
+            core.setOutput('executable', installInfo.executable);
+            core.addPath(installInfo.binDirectory);
+        }
+        catch (error) {
+            core.setFailed(error);
+        }
+    });
+}
+run();
+
 
 /***/ }),
 
@@ -699,7 +734,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const command_1 = __webpack_require__(241);
+const command_1 = __webpack_require__(351);
 const file_command_1 = __webpack_require__(717);
 const utils_1 = __webpack_require__(278);
 const os = __importStar(__webpack_require__(87));
@@ -1201,92 +1236,6 @@ exports.debug = debug; // for test
 
 /***/ }),
 
-/***/ 241:
-/***/ (function(__unusedmodule, exports, __webpack_require__) {
-
-"use strict";
-
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const os = __importStar(__webpack_require__(87));
-const utils_1 = __webpack_require__(278);
-/**
- * Commands
- *
- * Command Format:
- *   ::name key=value,key=value::message
- *
- * Examples:
- *   ::warning::This is the message
- *   ::set-env name=MY_VAR::some value
- */
-function issueCommand(command, properties, message) {
-    const cmd = new Command(command, properties, message);
-    process.stdout.write(cmd.toString() + os.EOL);
-}
-exports.issueCommand = issueCommand;
-function issue(name, message = '') {
-    issueCommand(name, {}, message);
-}
-exports.issue = issue;
-const CMD_STRING = '::';
-class Command {
-    constructor(command, properties, message) {
-        if (!command) {
-            command = 'missing.command';
-        }
-        this.command = command;
-        this.properties = properties;
-        this.message = message;
-    }
-    toString() {
-        let cmdStr = CMD_STRING + this.command;
-        if (this.properties && Object.keys(this.properties).length > 0) {
-            cmdStr += ' ';
-            let first = true;
-            for (const key in this.properties) {
-                if (this.properties.hasOwnProperty(key)) {
-                    const val = this.properties[key];
-                    if (val) {
-                        if (first) {
-                            first = false;
-                        }
-                        else {
-                            cmdStr += ',';
-                        }
-                        cmdStr += `${key}=${escapeProperty(val)}`;
-                    }
-                }
-            }
-        }
-        cmdStr += `${CMD_STRING}${escapeData(this.message)}`;
-        return cmdStr;
-    }
-}
-function escapeData(s) {
-    return utils_1.toCommandValue(s)
-        .replace(/%/g, '%25')
-        .replace(/\r/g, '%0D')
-        .replace(/\n/g, '%0A');
-}
-function escapeProperty(s) {
-    return utils_1.toCommandValue(s)
-        .replace(/%/g, '%25')
-        .replace(/\r/g, '%0D')
-        .replace(/\n/g, '%0A')
-        .replace(/:/g, '%3A')
-        .replace(/,/g, '%2C');
-}
-//# sourceMappingURL=command.js.map
-
-/***/ }),
-
 /***/ 278:
 /***/ (function(__unusedmodule, exports) {
 
@@ -1398,182 +1347,116 @@ module.exports = __webpack_require__(219);
 
 /***/ }),
 
+/***/ 325:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.find = void 0;
+const toolcache = __webpack_require__(784);
+function find() {
+    return __awaiter(this, void 0, void 0, function* () {
+        return toolcache.find('steamcmd', 'latest');
+    });
+}
+exports.find = find;
+
+
+/***/ }),
+
 /***/ 351:
-/***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
 
-const core = __webpack_require__(186);
-const tc = __webpack_require__(784);
-const exec = __webpack_require__(514);
-const path = __webpack_require__(622);
-const fs = __webpack_require__(747).promises;
+"use strict";
 
-const isLinux = process.platform === 'linux';
-const isDarwin = process.platform === 'darwin';
-const isWin32 = process.platform === 'win32';
-
-function assertPlatformSupported()
-{
-    if(!(isLinux || isDarwin || isWin32))
-    {
-        throw new Error('Unsupported platform');
-    }
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const os = __importStar(__webpack_require__(87));
+const utils_1 = __webpack_require__(278);
+/**
+ * Commands
+ *
+ * Command Format:
+ *   ::name key=value,key=value::message
+ *
+ * Examples:
+ *   ::warning::This is the message
+ *   ::set-env name=MY_VAR::some value
+ */
+function issueCommand(command, properties, message) {
+    const cmd = new Command(command, properties, message);
+    process.stdout.write(cmd.toString() + os.EOL);
 }
-
-function getExecutablePath(directory)
-{
-    const exension = isWin32 ? "exe" : "sh";
-    return path.join(directory, 'steamcmd.' + exension);
+exports.issueCommand = issueCommand;
+function issue(name, message = '') {
+    issueCommand(name, {}, message);
 }
-
-function getDownloadUrl()
-{
-    var archiveName;
-
-    if (isLinux)
-    {
-        archiveName = 'steamcmd_linux.tar.gz';
-    }
-    else if (isDarwin)
-    {
-        archiveName = 'steamcmd_osx.tar.gz';
-    }
-    else if (isWin32)
-    {
-        archiveName = 'steamcmd.zip';
-    }
-
-    return 'https://steamcdn-a.akamaihd.net/client/installer/' + archiveName;
-}
-
-function getInfo(installDir)
-{
-    return isWin32 ?
-    {
-        directory: installDir.replace(/\\/g, "/"),
-        executable: getExecutablePath(installDir).replace(/\\/g, "/"),
-        binDirectory: installDir.replace(/\\/g, "/"),
-    } :
-    {
-        directory: installDir,
-        executable: getExecutablePath(installDir),
-        binDirectory: path.join(installDir, 'bin'),
-    };
-}
-
-async function install()
-{
-    //
-    // Download
-    //
-    core.info('Downloading ...');
-    var archivePath = await tc.downloadTool(getDownloadUrl());
-
-    //
-    // Extract
-    //
-    core.info('Extracting ...');
-    var extractDir;
-
-    if (isWin32)
-    {
-        extractDir = await tc.extractZip(archivePath, 'steamcmd');
-    }
-    else
-    {
-        extractDir = await tc.extractTar(archivePath, 'steamcmd');
-    }
-
-    //
-    // Cache
-    //
-    core.info('Adding to the cache ...');
-    installDir = await tc.cacheDir(extractDir, 'steamcmd', 'latest', 'i386');
-
-    //
-    // Install dependencies
-    //
-    if(isLinux)
-    {
-        core.info('Installing required dependencies ...');
-
-        await exec.exec('sudo', ['apt-get', '--yes','update']);
-        await exec.exec('sudo', ['apt-get', '--yes', 'install', 'lib32gcc1']);
-    }
-
-    // Creates executable without .sh extension.
-    // So do not need anymore to write steamcmd.sh.
-    if(isLinux || isDarwin)
-    {
-        var binDir = path.join(installDir, 'bin');
-        const binExe = path.join(binDir, 'steamcmd');
-
-        await fs.mkdir(binDir);
-        await fs.writeFile(binExe, `#!/bin/bash\nexec "${installDir}/steamcmd.sh" "$@"`);
-        await fs.chmod(binExe, 0o755);
-    }
-
-    core.info('Updating ...');
-
-    try
-    {
-        const executable = getExecutablePath(installDir).replace(/\\/g, "/");
-        await exec.exec(executable, ['+quit']);
-    }
-    catch(error)
-    {
-        // SteamCMD exits with code 7 on first run on Windows.
-        if(isWin32 && error.message.endsWith('failed with exit code 7'))
-        {
-            core.info('Skipping exit code 7.');
+exports.issue = issue;
+const CMD_STRING = '::';
+class Command {
+    constructor(command, properties, message) {
+        if (!command) {
+            command = 'missing.command';
         }
-        else
-        {
-            throw error;
+        this.command = command;
+        this.properties = properties;
+        this.message = message;
+    }
+    toString() {
+        let cmdStr = CMD_STRING + this.command;
+        if (this.properties && Object.keys(this.properties).length > 0) {
+            cmdStr += ' ';
+            let first = true;
+            for (const key in this.properties) {
+                if (this.properties.hasOwnProperty(key)) {
+                    const val = this.properties[key];
+                    if (val) {
+                        if (first) {
+                            first = false;
+                        }
+                        else {
+                            cmdStr += ',';
+                        }
+                        cmdStr += `${key}=${escapeProperty(val)}`;
+                    }
+                }
+            }
         }
-    }
-
-    core.info('Done');
-
-    return getInfo(installDir);
-}
-
-async function installIfNeed()
-{
-    installDir = tc.find('steamcmd', 'latest');
-
-    if(installDir)
-    {
-        core.info(`Found in cache @ ${installDir}`);
-
-        return getInfo(installDir);
-    }
-    else
-    {
-        return await install();
+        cmdStr += `${CMD_STRING}${escapeData(this.message)}`;
+        return cmdStr;
     }
 }
-
-async function run()
-{
-    try
-    {
-        assertPlatformSupported();
-
-        const info = await installIfNeed();
-
-        core.setOutput('directory', info.directory);
-        core.setOutput('executable', info.executable);
-
-        core.addPath(info.binDirectory);
-    }
-    catch (error)
-    {
-        core.setFailed(error);
-    }
+function escapeData(s) {
+    return utils_1.toCommandValue(s)
+        .replace(/%/g, '%25')
+        .replace(/\r/g, '%0D')
+        .replace(/\n/g, '%0A');
 }
-
-run();
-
+function escapeProperty(s) {
+    return utils_1.toCommandValue(s)
+        .replace(/%/g, '%25')
+        .replace(/\r/g, '%0D')
+        .replace(/\n/g, '%0A')
+        .replace(/:/g, '%3A')
+        .replace(/,/g, '%2C');
+}
+//# sourceMappingURL=command.js.map
 
 /***/ }),
 
@@ -2267,7 +2150,7 @@ const fs = __importStar(__webpack_require__(747));
 const mm = __importStar(__webpack_require__(473));
 const os = __importStar(__webpack_require__(87));
 const path = __importStar(__webpack_require__(622));
-const httpm = __importStar(__webpack_require__(925));
+const httpm = __importStar(__webpack_require__(936));
 const semver = __importStar(__webpack_require__(911));
 const stream = __importStar(__webpack_require__(413));
 const util = __importStar(__webpack_require__(669));
@@ -4515,6 +4398,153 @@ function coerce (version, options) {
 
 "use strict";
 
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.installIfNeed = void 0;
+const path = __webpack_require__(622);
+const fs = __webpack_require__(747);
+const finder = __webpack_require__(325);
+const core = __webpack_require__(186);
+const exec = __webpack_require__(514);
+const toolcache = __webpack_require__(784);
+const IS_LINUX = process.platform === 'linux';
+const IS_WINDOWS = process.platform === 'win32';
+const IS_DARWIN = process.platform === 'darwin';
+const BIN_FOLDER_NAME = '_bin';
+function installIfNeed() {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (!(IS_LINUX || IS_WINDOWS || IS_DARWIN)) {
+            throw new Error('Unsupported platform');
+        }
+        const installDir = yield finder.find();
+        if (installDir) {
+            core.info(`Found in cache: ${installDir}`);
+            return getInstallInfo(installDir);
+        }
+        else {
+            return yield install();
+        }
+    });
+}
+exports.installIfNeed = installIfNeed;
+function install() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const downloadDir = yield download();
+        const installDir = yield cache(downloadDir);
+        yield installRequiredDependencies();
+        yield setupBin(installDir);
+        yield update(installDir);
+        core.info('Done');
+        return getInstallInfo(installDir);
+    });
+}
+function download() {
+    return __awaiter(this, void 0, void 0, function* () {
+        core.info('Downloading ...');
+        let archivePath = yield toolcache.downloadTool(getDownloadUrl());
+        core.info('Extracting ...');
+        if (IS_WINDOWS) {
+            return yield toolcache.extractZip(archivePath, 'steamcmd');
+        }
+        else {
+            return yield toolcache.extractTar(archivePath, 'steamcmd');
+        }
+    });
+}
+function getDownloadUrl() {
+    const url = 'https://steamcdn-a.akamaihd.net/client/installer/';
+    if (IS_LINUX) {
+        return url + 'steamcmd_linux.tar.gz';
+    }
+    else if (IS_WINDOWS) {
+        return url + 'steamcmd.zip';
+    }
+    else if (IS_DARWIN) {
+        return url + 'steamcmd_osx.tar.gz';
+    }
+    throw Error('Unsupported platform');
+}
+function cache(downloadDir) {
+    return __awaiter(this, void 0, void 0, function* () {
+        core.info('Adding to the cache ...');
+        return yield toolcache.cacheDir(downloadDir, 'steamcmd', 'latest', 'i386');
+    });
+}
+function installRequiredDependencies() {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (IS_LINUX) {
+            core.info('Installing required dependencies ...');
+            yield exec.exec('sudo', ['apt-get', 'update', '--yes']);
+            yield exec.exec('sudo', ['apt-get', 'install', 'lib32gcc1', '--yes']);
+        }
+    });
+}
+function setupBin(installDir) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const binDir = path.join(installDir, BIN_FOLDER_NAME);
+        yield fs.promises.mkdir(binDir);
+        if (IS_LINUX || IS_DARWIN) {
+            const binExe = path.join(binDir, 'steamcmd');
+            yield fs.promises.writeFile(binExe, '#!/bin/bash\nexec "$(dirname "$BASH_SOURCE")/../steamcmd.sh" "$@"');
+            yield fs.promises.chmod(binExe, 0o755);
+        }
+        else if (IS_WINDOWS) {
+            const binExe = path.join(binDir, 'steamcmd.bat');
+            yield fs.promises.writeFile(binExe, 'start %~dp0\\..\\steamcmd.exe %*');
+        }
+    });
+}
+function getInstallInfo(installDir) {
+    return IS_WINDOWS ? {
+        directory: installDir,
+        binDirectory: getBinDirectory(installDir),
+        executable: getExecutablePath(installDir),
+    } : {
+        directory: installDir,
+        binDirectory: getBinDirectory(installDir),
+        executable: getExecutablePath(installDir),
+    };
+}
+function getBinDirectory(installDir) {
+    return path.join(installDir, BIN_FOLDER_NAME);
+}
+function getExecutablePath(installDir) {
+    return path.join(installDir, 'steamcmd.' + (IS_WINDOWS ? 'exe' : 'sh'));
+}
+function update(installDir) {
+    return __awaiter(this, void 0, void 0, function* () {
+        core.info('Updating ...');
+        try {
+            yield exec.exec(getExecutablePath(installDir), ['+quit']);
+        }
+        catch (error) {
+            // steamcmd exits with error code 7 on first run on windows
+            if (IS_WINDOWS && error.message.endsWith('failed with exit code 7')) {
+                core.info('Skipping exit code 7');
+            }
+            else {
+                throw error;
+            }
+        }
+    });
+}
+
+
+/***/ }),
+
+/***/ 936:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
 Object.defineProperty(exports, "__esModule", { value: true });
 const url = __webpack_require__(835);
 const http = __webpack_require__(605);
@@ -5252,4 +5282,3 @@ function isUnixExecutable(stats) {
 /***/ })
 
 /******/ });
-//# sourceMappingURL=index.js.map

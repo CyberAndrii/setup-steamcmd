@@ -1,5 +1,8 @@
 node_modules/
 
+# Ignore js files that are transpiled from ts files in src/
+lib/
+
 # Created when using 'act --bind' command
 steamcmd/
 
