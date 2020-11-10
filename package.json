@@ -2,6 +2,7 @@
   "name": "setup-steamcmd",
   "version": "2.0.0",
   "description": "This action sets up the Steam Console Client for use in actions.",
+  "private": true,
   "main": "dist/index.js",
   "dependencies": {
     "@actions/core": "^1.2.6",
