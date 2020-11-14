@@ -95,7 +95,7 @@ async function setupBin(installDir: string) {
         await fs.promises.chmod(binExe, 0o755);
     } else if (IS_WINDOWS) {
         const binExe: string = path.join(binDir, 'steamcmd.bat');
-        await fs.promises.writeFile(binExe, '$ErrorView = "NormalView"\ncall "%~dp0\\..\\steamcmd.exe" %*');
+        await fs.promises.writeFile(binExe, 'powershell -command "\"%~dp0\\..\\steamcmd.exe\" %*"');
     }
 }
 

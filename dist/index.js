@@ -4498,7 +4498,7 @@ function setupBin(installDir) {
         }
         else if (IS_WINDOWS) {
             const binExe = path.join(binDir, 'steamcmd.bat');
-            yield fs.promises.writeFile(binExe, 'start %~dp0\\..\\steamcmd.exe %*');
+            yield fs.promises.writeFile(binExe, 'powershell -command "\"%~dp0\\..\\steamcmd.exe\" %*"');
         }
     });
 }
