@@ -16,7 +16,7 @@ const BIN_FOLDER_NAME: string = '_bin';
 export interface InstallInfo {
     directory: string;
     binDirectory: string;
-    executable: string
+    executable: string;
 }
 
 export async function installIfNeed(): Promise<InstallInfo> {
@@ -90,25 +90,33 @@ async function setupBin(installDir: string) {
     await fs.promises.mkdir(binDir);
 
     if (IS_LINUX || IS_DARWIN) {
-        const binExe: string = path.join(binDir, 'steamcmd')
-        await fs.promises.writeFile(binExe, '#!/bin/bash\nexec "$(dirname "$BASH_SOURCE")/../steamcmd.sh" "$@"');
+        const binExe: string = path.join(binDir, 'steamcmd');
+        await fs.promises.writeFile(
+            binExe,
+            '#!/bin/bash\nexec "$(dirname "$BASH_SOURCE")/../steamcmd.sh" "$@"'
+        );
         await fs.promises.chmod(binExe, 0o755);
     } else if (IS_WINDOWS) {
         const binExe: string = path.join(binDir, 'steamcmd.bat');
-        await fs.promises.writeFile(binExe, 'powershell -command "\"%~dp0\\..\\steamcmd.exe\" %*"');
+        await fs.promises.writeFile(
+            binExe,
+            'powershell -command ""%~dp0\\..\\steamcmd.exe" %*"'
+        );
     }
 }
 
 function getInstallInfo(installDir: string): InstallInfo {
-    return IS_WINDOWS ? {
-        directory: installDir,
-        binDirectory: getBinDirectory(installDir),
-        executable: getExecutablePath(installDir),
-    } : {
-        directory: installDir,
-        binDirectory: getBinDirectory(installDir),
-        executable: getExecutablePath(installDir),
-    };
+    return IS_WINDOWS
+        ? {
+              directory: installDir,
+              binDirectory: getBinDirectory(installDir),
+              executable: getExecutablePath(installDir),
+          }
+        : {
+              directory: installDir,
+              binDirectory: getBinDirectory(installDir),
+              executable: getExecutablePath(installDir),
+          };
 }
 
 function getBinDirectory(installDir: string): string {

@@ -1,6 +1,7 @@
 # setup-steamcmd v2
 
-[![Integration test status](https://github.com/CyberAndrii/setup-steamcmd/workflows/Integration%20test/badge.svg)](https://github.com/CyberAndrii/setup-steamcmd/actions)
+[![Tests status](https://github.com/CyberAndrii/setup-steamcmd/workflows/Tests/badge.svg)](https://github.com/CyberAndrii/setup-steamcmd/actions)
+[![Integration tests status](https://github.com/CyberAndrii/setup-steamcmd/workflows/Integration%20tests/badge.svg)](https://github.com/CyberAndrii/setup-steamcmd/actions)
 [![License: MIT](https://img.shields.io/github/license/CyberAndrii/setup-steamcmd?label=License)](LICENSE)
 
 This action sets up the **Steam Console Client** for use in actions.

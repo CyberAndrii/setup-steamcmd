@@ -3,7 +3,7 @@
 # Runs workflows locally using https://github.com/nektos/act
 
 npm install
-npm run release
+npm run build
 
 act \
 --platform ubuntu-latest=nektos/act-environments-ubuntu:18.04 \

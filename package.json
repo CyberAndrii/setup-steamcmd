@@ -2,26 +2,17 @@
   "name": "setup-steamcmd",
   "version": "2.0.0",
   "description": "This action sets up the Steam Console Client for use in actions.",
+  "homepage": "https://github.com/CyberAndrii/setup-steamcmd#readme",
+  "author": "Andrii Vitiv",
+  "license": "MIT",
   "private": true,
   "main": "dist/index.js",
-  "dependencies": {
-    "@actions/core": "^1.2.6",
-    "@actions/exec": "^1.0.4",
-    "@actions/tool-cache": "^1.6.0"
-  },
-  "devDependencies": {
-    "@types/node": "^14.14.6",
-    "@vercel/ncc": "^0.23.0",
-    "typescript": "^4.0.5"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
-    "release": "ncc build src/setup-steamcmd.ts"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/CyberAndrii/setup-steamcmd.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CyberAndrii/setup-steamcmd/issues"
   },
   "keywords": [
     "github",
@@ -30,10 +21,28 @@
     "steamcmd",
     "valve"
   ],
-  "author": "Andrii Vitiv",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/CyberAndrii/setup-steamcmd/issues"
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "ncc build src/setup-steamcmd.ts && git add -f dist/",
+    "format": "prettier --write **/*.ts",
+    "format-check": "prettier --check **/*.ts"
   },
-  "homepage": "https://github.com/CyberAndrii/setup-steamcmd#readme"
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "@actions/exec": "^1.0.4",
+    "@actions/tool-cache": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.6",
+    "@vercel/ncc": "^0.23.0",
+    "husky": "^4.3.0",
+    "prettier": "^2.1.2",
+    "typescript": "^4.0.5"
+  },
+  "husky": {
+    "skipCI": true,
+    "hooks": {
+      "pre-commit": "npm run build && npm run format-check"
+    }
+  }
 }

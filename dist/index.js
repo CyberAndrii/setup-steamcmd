@@ -4498,20 +4498,22 @@ function setupBin(installDir) {
         }
         else if (IS_WINDOWS) {
             const binExe = path.join(binDir, 'steamcmd.bat');
-            yield fs.promises.writeFile(binExe, 'powershell -command "\"%~dp0\\..\\steamcmd.exe\" %*"');
+            yield fs.promises.writeFile(binExe, 'powershell -command ""%~dp0\\..\\steamcmd.exe" %*"');
         }
     });
 }
 function getInstallInfo(installDir) {
-    return IS_WINDOWS ? {
-        directory: installDir,
-        binDirectory: getBinDirectory(installDir),
-        executable: getExecutablePath(installDir),
-    } : {
-        directory: installDir,
-        binDirectory: getBinDirectory(installDir),
-        executable: getExecutablePath(installDir),
-    };
+    return IS_WINDOWS
+        ? {
+            directory: installDir,
+            binDirectory: getBinDirectory(installDir),
+            executable: getExecutablePath(installDir),
+        }
+        : {
+            directory: installDir,
+            binDirectory: getBinDirectory(installDir),
+            executable: getExecutablePath(installDir),
+        };
 }
 function getBinDirectory(installDir) {
     return path.join(installDir, BIN_FOLDER_NAME);
