@@ -1497,7 +1497,7 @@ async function install()
         core.info('Installing required dependencies ...');
 
         await exec.exec('sudo', ['apt-get', '--yes','update']);
-        await exec.exec('sudo', ['apt-get', '--yes', 'install', 'lib32gcc1']);
+        await exec.exec('sudo', ['apt-get', '--yes', 'install', 'lib32gcc-s1']);
     }
 
     // Creates executable without .sh extension.
