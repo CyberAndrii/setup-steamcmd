@@ -18,13 +18,13 @@ function assertPlatformSupported()
 
 function getExecutablePath(directory)
 {
-    const exension = isWin32 ? "exe" : "sh";
-    return path.join(directory, 'steamcmd.' + exension);
+    const extension = isWin32 ? "exe" : "sh";
+    return path.join(directory, 'steamcmd.' + extension);
 }
 
 function getDownloadUrl()
 {
-    var archiveName;
+    let archiveName;
 
     if (isLinux)
     {
@@ -57,19 +57,61 @@ function getInfo(installDir)
     };
 }
 
+async function installDependencies()
+{
+    core.info('Installing required dependencies ...');
+
+    if(isLinux)
+    {
+        await installLinuxDependencies();
+    }
+}
+
+async function installLinuxDependencies()
+{
+    const packagesToInstall = ['lib32gcc-s1'];
+
+    const aptUpdateStatusCode = await exec.exec('apt-get', ['--yes','update'], { ignoreReturnCode: true });
+
+    if(aptUpdateStatusCode === 0)
+    {
+        await exec.exec('apt-get', ['--yes', 'install', ...packagesToInstall]);
+        return;
+    }
+
+    // if previous command fails, check if the packages are already installed
+    // if not, throw an error
+
+    for (const packageToInstall of packagesToInstall)
+    {
+        const status = await exec.exec(
+            '/usr/bin/dpkg-query', 
+            ['--show', '--showformat=\'${db:Status-Status}\\n\'', packageToInstall], 
+            { ignoreReturnCode: true }
+        );
+
+        if(status !== 0)
+        {
+            throw new Error(`Failed to install ${packageToInstall}.`);
+        }
+
+        core.info(`Failed to update ${packageToInstall}, using installed version. This is the intended behavior for a rootless user.`);
+    }
+}
+
 async function install()
 {
     //
     // Download
     //
     core.info('Downloading ...');
-    var archivePath = await tc.downloadTool(getDownloadUrl());
+    const archivePath = await tc.downloadTool(getDownloadUrl());
 
     //
     // Extract
     //
     core.info('Extracting ...');
-    var extractDir;
+    let extractDir;
 
     if (isWin32)
     {
@@ -84,24 +126,18 @@ async function install()
     // Cache
     //
     core.info('Adding to the cache ...');
-    installDir = await tc.cacheDir(extractDir, 'steamcmd', 'latest', 'i386');
+    const installDir = await tc.cacheDir(extractDir, 'steamcmd', 'latest', 'i386');
 
     //
     // Install dependencies
     //
-    if(isLinux)
-    {
-        core.info('Installing required dependencies ...');
-
-        await exec.exec('sudo', ['apt-get', '--yes','update']);
-        await exec.exec('sudo', ['apt-get', '--yes', 'install', 'lib32gcc-s1']);
-    }
+    await installDependencies();
 
     // Creates executable without .sh extension.
-    // So do not need anymore to write steamcmd.sh.
+    // So we do not need to write steamcmd.sh anymore.
     if(isLinux || isDarwin)
     {
-        var binDir = path.join(installDir, 'bin');
+        const binDir = path.join(installDir, 'bin');
         const binExe = path.join(binDir, 'steamcmd');
 
         await fs.mkdir(binDir);
@@ -111,22 +147,13 @@ async function install()
 
     core.info('Updating ...');
 
-    try
+    const executable = getExecutablePath(installDir).replace(/\\/g, "/");
+    const exitCode = await exec.exec(executable, ['+quit'], { ignoreReturnCode: isWin32 });
+
+    // SteamCMD exits with code 7 on first run on Windows.
+    if(isWin32 && exitCode === 7)
     {
-        const executable = getExecutablePath(installDir).replace(/\\/g, "/");
-        await exec.exec(executable, ['+quit']);
-    }
-    catch(error)
-    {
-        // SteamCMD exits with code 7 on first run on Windows.
-        if(isWin32 && error.message.endsWith('failed with exit code 7'))
-        {
-            core.info('Skipping exit code 7.');
-        }
-        else
-        {
-            throw error;
-        }
+        core.info('Ignoring exit code 7.');
     }
 
     core.info('Done');
@@ -136,7 +163,7 @@ async function install()
 
 async function installIfNeed()
 {
-    installDir = tc.find('steamcmd', 'latest');
+    const installDir = tc.find('steamcmd', 'latest');
 
     if(installDir)
     {
