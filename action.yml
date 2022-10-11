@@ -10,5 +10,5 @@ outputs:
   executable:
     description: 'Path to steamcmd.sh or steamcmd.exe file depending on OS.'
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'dist/index.js'
