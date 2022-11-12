@@ -39,7 +39,7 @@ function getDownloadUrl()
         archiveName = 'steamcmd.zip';
     }
 
-    return 'https://steamcdn-a.akamaihd.net/client/installer/' + archiveName;
+    return ['https://steamcdn-a.akamaihd.net/client/installer/' + archiveName, archiveName];
 }
 
 function getInfo(installDir)
@@ -99,13 +99,21 @@ async function installLinuxDependencies()
     }
 }
 
+function getTempDirectory()
+{
+    return process.env['RUNNER_TEMP'] ?? (() => { throw new Error('Expected RUNNER_TEMP to be defined') })();
+}
+
 async function install()
 {
     //
     // Download
     //
     core.info('Downloading ...');
-    const archivePath = await tc.downloadTool(getDownloadUrl());
+    const [downloadUrl, archiveName] = getDownloadUrl();
+
+    // Why we need to set the destination directory: https://github.com/CyberAndrii/setup-steamcmd/issues/5
+    const archivePath = await tc.downloadTool(downloadUrl, path.join(getTempDirectory(), archiveName));
 
     //
     // Extract
